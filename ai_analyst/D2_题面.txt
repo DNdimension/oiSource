@@ -1,0 +1,147 @@
+https://codeforces.com/contest/2247/problem/D2
+D2. XOR Sorting (Hard Version)
+time limit per test2 seconds
+memory limit per test256 megabytes
+
+This is the hard version of the problem. The only difference between the versions is that in this version, 0≤q≤106
+.
+
+Note that zero-based indexing is used in this problem.
+
+For an array b
+ consisting of m
+ positive integers, define f(b)
+ as follows.
+
+For a non-negative integer k
+, we say that b
+ can be k
+-sorted if it can be sorted in non-decreasing order by performing the following operation any number of times:
+
+Choose two indices i
+ and j
+ (0≤i<j≤m−1
+) such that i⊕j≤k
+∗
+. Note that the condition applies to the indices i
+ and j
+, not to the elements bi
+ and bj
+.
+Swap the elements bi
+ and bj
+.
+The value f(b)
+ is defined as the smallest non-negative integer k
+ such that the array b
+ can be k
+-sorted.
+
+You are given an array a
+ of length n
+, consisting of positive integers. You will perform q
+ updates on a
+. Each update has the following form:
+
+ix
+: assign ai=x
+.
+Note that the updates are persistent. In other words, each update affects all subsequent states of the array.
+
+For each of the q+1
+ states of a
+ — the initial state and the state after each of the q
+ updates — find the value of f(a)
+.
+
+∗
+⊕
+ denotes the bitwise XOR operation
+
+Input
+Each test contains multiple test cases. The first line contains the number of test cases t
+ (1≤t≤104
+). The description of the test cases follows.
+
+The first line of each test case contains two integers n
+ and q
+ (1≤n≤106
+, 0≤q≤106
+) — the length of the array a
+ and the number of updates.
+
+The second line of each test case contains n
+ integers a0,a1,…,an−1
+ (1≤ai≤109
+) — the array a
+.
+
+The j
+-th of the following q
+ lines contains two integers ij
+ and xj
+ (0≤ij<n
+, 1≤xj≤109
+) — the description of the j
+-th update. This update means that the assignment aij=xj
+ is performed.
+
+It is guaranteed that the sum of n
+ over all test cases does not exceed 106
+.
+
+It is guaranteed that the sum of q
+ over all test cases does not exceed 106
+.
+
+Output
+For each test case, output q+1
+ integers — the values of f(a)
+ for the initial state of the array and after each of the q
+ updates, in order.
+
+Example
+InputCopy
+3
+2 0
+1 2
+2 1
+1000000000 999999999
+1 1000000000
+6 2
+2 5 3 4 1 6
+1 2
+4 5
+OutputCopy
+0
+1
+0
+4
+4
+0
+Note
+In the first example, the initial array is a=[1,2]
+. It is already sorted, so f(a)=0
+.
+
+In the second example, the initial array is a=[109,109−1]
+. We can swap a0
+ and a1
+, transforming a
+ as follows: [109,109−1]→[109−1,109]
+. Therefore, f(a)=0⊕1=1
+.
+
+After the only update, the array becomes a=[109,109]
+. It is already sorted, so f(a)=0
+.
+
+In the third example, the initial array is a=[2,5,3,4,1,6]
+. We can perform swaps using the index pairs (0,1)
+ and (0,4)
+, transforming a
+ as follows: [2,5,3,4,1,6]→[5,2,3,4,1,6]
+, [5,2,3,4,1,6]→[1,2,3,4,5,6]
+. It can be shown that no smaller value of k
+ is sufficient, so f(a)=max(0⊕1,0⊕4)=4
+.
