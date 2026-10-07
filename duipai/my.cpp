@@ -2,7 +2,7 @@
 #define LS o<<1
 #define RS o<<1|1
 using namespace std;
-constexpr int N=2e6,INF=1e9;
+constexpr int N=2e6+5,INF=1e9+5;
 int n,q,p,t,a[N],mn[N<<2],mx[N<<2],k[N<<2];
 void bld(int l,int r,int o) {
 	if(l==r) mn[o]=mx[o]=a[l],k[o]=0;

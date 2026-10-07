@@ -5,10 +5,10 @@ int main(int argc, char** argv) {
     int seed = (argc > 1) ? atoi(argv[1]) : 0;
     mt19937 rng(seed);
 
-    int maxT = 1;
-    int maxN = 1e6;
-    int maxQ = 1e6;
-    int maxVal = 1e9;
+    int maxT = 10;
+    int maxN = 1e3;
+    int maxQ = 1e3;
+    int maxVal = 1e3;
 
     int T = rng() % maxT + 1;
     cout << T << '\n';
