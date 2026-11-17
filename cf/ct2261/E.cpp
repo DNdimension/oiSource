@@ -1,31 +1,40 @@
 #include <iostream>
-#include <algorithm>
+#include <queue>
 using namespace std;
-constexpr int N=4e5+2;
-int T,n,k,ad,ans,a[N];
+constexpr int N=4e5+4;
+int T,n,k,ans,a[N],p[N];
 char ch;
+deque<int> Q;
 int main() {
 	ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
 	cin>>T;
 	while(T--) {
 		cin>>n>>k;
-		ad=ans=0;
-		for(int i=1;i<=n;i++) {
+		while(!Q.empty()) Q.pop_back();
+		for(int i=1,v=0,c=0;i<=n;i++) {
 			cin>>ch;
-			if(ch=='(') a[i]=1;
-			else a[i]=-1;
+			if(ch=='(') v++;
+			else {
+				a[++c]=v;
+				v=0;
+			}
 		}
-		for(int i=1;i<n&&k;i++) {
-			if(a[i]+a[i+1]) continue;
-			a[i]=a[i+1]=0;
-			cout<<i<<' '<<ad<<'\n';
-			i++,ad++,k--;
+		n>>=1,ans=0;
+		for(int i=1,A=0;i<=n;i++) {
+			A+=a[i];
+			if(i-1<=k) ans=max(ans,min(n,A+k-i+1));
 		}
-		for(int i=1;i<n;i++) {
-			a[i]=a[i-1]+a[i];
-			if(a[i+1]==-1) ans=max(ans,a[i]);
+		for(int i=1;i<=n;i++) {
+			a[i]--;
+			p[i]=p[i-1]+a[i];
 		}
-		cout<<ans+ad<<'\n';
+		for(int i=1;i<=n;i++) {
+			while(!Q.empty()&&i-1-Q.front()>k) Q.pop_front();
+			while(!Q.empty()&&p[i-1]<p[Q.back()]) Q.pop_back();
+			Q.push_back(i-1);
+			ans=max(ans,p[i]-p[Q.front()]+1);
+		}
+		cout<<ans<<'\n';
 	}
 	return 0;
 }

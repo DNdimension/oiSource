@@ -1,48 +1,40 @@
 #include <iostream>
-#define LS o<<1
-#define RS o<<1|1
+#include <queue>
 using namespace std;
-constexpr int N=2e6+5,INF=1e9+5;
-int n,q,p,t,a[N],mn[N<<2],mx[N<<2],k[N<<2];
-void bld(int l,int r,int o) {
-	if(l==r) mn[o]=mx[o]=a[l],k[o]=0;
-	else {
-		int mid=l+(r-l>>1);
-		bld(l,mid,LS);
-		bld(mid+1,r,RS);
-		if(mx[LS]>mn[RS]) k[o]=r-mid;
-		else k[o]=max(k[LS],k[RS]);
-		mn[o]=min(mn[LS],mn[RS]);
-		mx[o]=max(mx[LS],mx[RS]);
-	}
-}
-void edt(int l,int r,int o) {
-	if(l==r) mn[o]=mx[o]=a[l];
-	else {
-		int mid=l+(r-l>>1);
-		if(p<=mid) edt(l,mid,LS);
-		else edt(mid+1,r,RS);
-		if(mx[LS]>mn[RS]) k[o]=r-mid;
-		else k[o]=max(k[LS],k[RS]);
-		mn[o]=min(mn[LS],mn[RS]);
-		mx[o]=max(mx[LS],mx[RS]);
-	}
-}
+constexpr int N=4e5+4;
+int T,n,k,ans,a[N],p[N];
+char ch;
+deque<int> Q;
 int main() {
 	ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
-	cin>>t;
-	while(t--) {
-		cin>>n>>q;
-		for(int i=1;i<=n;i++) cin>>a[i];
-		for(;n&(n-1);n++) a[n+1]=INF;
-		bld(1,n,1);
-		cout<<k[1]<<'\n';
-		for(int i=1;i<=q;i++) {
-			cin>>p;
-			cin>>a[++p];
-			edt(1,n,1);
-			cout<<k[1]<<'\n';
+	cin>>T;
+	while(T--) {
+		cin>>n>>k;
+		while(!Q.empty()) Q.pop_back();
+		for(int i=1,v=0,c=0;i<=n;i++) {
+			cin>>ch;
+			if(ch=='(') v++;
+			else {
+				a[++c]=v;
+				v=0;
+			}
 		}
+		n>>=1,ans=0;
+		for(int i=1,A=0;i<=n;i++) {
+			A+=a[i];
+			if(i-1<=k) ans=max(ans,min(n,A+k-i+1));
+		}
+		for(int i=1;i<=n;i++) {
+			a[i]--;
+			p[i]=p[i-1]+a[i];
+		}
+		for(int i=1;i<=n;i++) {
+			while(!Q.empty()&&i-1-Q.front()>k) Q.pop_front();
+			while(!Q.empty()&&p[i-1]<p[Q.back()]) Q.pop_back();
+			Q.push_back(i-1);
+			ans=max(ans,p[i]-p[Q.front()]+1);
+		}
+		cout<<ans<<'\n';
 	}
 	return 0;
 }
